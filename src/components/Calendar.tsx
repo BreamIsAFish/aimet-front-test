@@ -78,18 +78,22 @@ const Calendar = () => {
 
   const onClickNextMonth = () => {
     if (currentMonth === 11) {
+      setStartDay((new Date(currentYear + 1, 0, 1).getDay() + 6) % 7)
       setCurrentMonth(0)
       setCurrentYear(currentYear + 1)
     } else {
+      setStartDay((new Date(currentYear, currentMonth + 1, 1).getDay() + 6) % 7)
       setCurrentMonth(currentMonth + 1)
     }
   }
 
   const onClickPrevMonth = () => {
     if (currentMonth === 0) {
+      setStartDay((new Date(currentYear - 1, 11, 1).getDay() + 6) % 7)
       setCurrentMonth(11)
       setCurrentYear(currentYear - 1)
     } else {
+      setStartDay((new Date(currentYear, currentMonth - 1, 1).getDay() + 6) % 7)
       setCurrentMonth(currentMonth - 1)
     }
   }
@@ -114,12 +118,12 @@ const Calendar = () => {
   return (
     // <TransitionGroup>
     <div
-      className={`flex flex-col justify-center items-center p-10 rounded-xl bg-white overflow-hidden`}
+      className={`calendar flex flex-col justify-center items-center p-10 rounded-xl bg-white overflow-hidden`}
     >
       {/* Top Section */}
       <div className="flex justify-between w-full mb-6">
         {/* Month & Year */}
-        <h1 className="text-dark-gray font-bold">{`${MonthInYear[currentMonth]} ${currentYear}`}</h1>
+        <h1 className="month-n-year text-dark-gray font-bold">{`${MonthInYear[currentMonth]} ${currentYear}`}</h1>
         {/* Month Selection Arrow */}
         <div className="flex justify-center items-center">
           <Image
@@ -128,7 +132,7 @@ const Calendar = () => {
             alt="arrow-left"
             width={6}
             height={6}
-            className="rotate-180 mr-4 object-contain"
+            className="rotate-180 mr-4 object-contain left-arrow"
           />
           <Image
             onClick={onClickNextMonth}
@@ -136,7 +140,7 @@ const Calendar = () => {
             alt="arrow-right"
             width={6}
             height={6}
-            className="object-contain"
+            className="object-contain right-arrow"
           />
         </div>
       </div>
@@ -170,13 +174,13 @@ const Calendar = () => {
             onClick={() => onClickDate(date)}
             className={`flex justify-center items-center ${
               isSelectingDate(date)
-                ? 'text-white bg-red rounded-full'
+                ? 'text-white bg-red rounded-full selecting-date'
                 : 'text-subtext-gray'
-            } text-normal w-9 h-9 relative cursor-pointer`}
+            } text-normal w-9 h-9 relative cursor-pointer date-${date}`}
           >
             {date}
             {getEventFromDate(date).length > 0 && (
-              <div className="w-[6px] h-[6px] rounded-full bg-red absolute bottom-0" />
+              <div className="w-[6px] h-[6px] rounded-full bg-red absolute bottom-0 red-dot" />
             )}
           </div>
         ))}
@@ -202,16 +206,16 @@ const Calendar = () => {
           style={{ height: 'auto', transition: 'height 1s ease-in-out' }}
         > */}
         {getEventFromDate(selectingDate).length > 0 && (
-          <div className="flex flex-col w-full pt-6 gap-3">
+          <div className="event-list flex flex-col w-full pt-6 gap-3">
             {getEventFromDate(selectingDate).map((event, idx) => (
               <div
                 key={idx}
-                className="flex flex-col justify-center items-start"
+                className="event-info flex flex-col justify-center items-start"
               >
-                <p className="text-xs text-subtext-gray">{`${convertTimeToDisplayFormat(
+                <p className="event-time text-xs text-subtext-gray">{`${convertTimeToDisplayFormat(
                   event.startTime
                 )} - ${convertTimeToDisplayFormat(event.endTime)}`}</p>
-                <p className="text-normal font-normal text-dark-gray">
+                <p className="event-title text-normal font-normal text-dark-gray">
                   {event.title}
                 </p>
               </div>

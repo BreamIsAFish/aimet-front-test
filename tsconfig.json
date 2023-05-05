@@ -17,7 +17,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": ["cypress"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],
   "exclude": ["node_modules"]
