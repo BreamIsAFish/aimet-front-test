@@ -1,6 +1,5 @@
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
-// import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { useEffect, useState } from 'react'
 import AnimateHeight, { Height } from 'react-animate-height'
 
 import useCalendar from '@/hooks/useCalendar'
@@ -22,10 +21,7 @@ const Calendar = () => {
     (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7
   ) // Day of the week (0-6) of the first day of the month (0 is Monday, 6 is Sunday)
 
-  const [inProp, setInProp] = useState(false)
-  // const [infoHeight, setInfoHeight] = useState('0')
   const [infoHeight, setInfoHeight] = useState<Height>(0)
-  const nodeRef = useRef(null)
 
   const { data: eventData, loading, fetchCalendarData } = useCalendar()
 
@@ -104,11 +100,7 @@ const Calendar = () => {
     } else {
       setInfoHeight(0)
     }
-    // setInProp(true)
     setSelectingDate(date)
-    // setTimeout(() => {
-    //   setInfoHeight('auto')
-    // }, 500)
   }
 
   if (loading) {
@@ -116,7 +108,6 @@ const Calendar = () => {
   }
 
   return (
-    // <TransitionGroup>
     <div
       className={`calendar flex flex-col justify-center items-center p-10 rounded-xl bg-white overflow-hidden`}
     >
@@ -187,24 +178,11 @@ const Calendar = () => {
       </div>
 
       {/* Event List */}
-      {/* <CSSTransition
-        nodeRef={nodeRef}
-        in={inProp}
-        classNames="fade"
-        timeout={300}
-        onEntered={() => setInProp(false)}
-        // onExited={() => setInProp(false)}
-      > */}
       <AnimateHeight
         duration={500}
         height={infoHeight}
         className="w-full"
       >
-        {/* <div
-          ref={nodeRef}
-        className="w-full"
-          style={{ height: 'auto', transition: 'height 1s ease-in-out' }}
-        > */}
         {getEventFromDate(selectingDate).length > 0 && (
           <div className="event-list flex flex-col w-full pt-6 gap-3">
             {getEventFromDate(selectingDate).map((event, idx) => (
@@ -222,11 +200,8 @@ const Calendar = () => {
             ))}
           </div>
         )}
-        {/* </div> */}
       </AnimateHeight>
-      {/* </CSSTransition> */}
     </div>
-    // </TransitionGroup>
   )
 }
 
