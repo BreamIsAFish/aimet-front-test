@@ -1,6 +1,8 @@
 export type CalendarData = {
-  [year: string /*2023*/]: {
-    [month: string /*1-12*/]: CalendarEventType[]
+  [year: number /*2023*/]: {
+    [month: number /*1-12*/]: {
+      [date: number /*1-31*/]: CalendarEventType[]
+    }
   }
 }
 
